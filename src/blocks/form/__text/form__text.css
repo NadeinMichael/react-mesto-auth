@@ -1,0 +1,15 @@
+.form__text {
+  display: block;
+  border: none;
+  width: 100%;
+  min-height: 27px;
+  outline-style: none;
+  border-bottom: 2px solid #cccccc;
+  background-color: inherit;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 0;
+
+  color: #cccccc;
+}

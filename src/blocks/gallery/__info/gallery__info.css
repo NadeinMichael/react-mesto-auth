@@ -1,0 +1,7 @@
+.gallery__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #000;
+  padding: 24px 21px 23px 21px;
+}

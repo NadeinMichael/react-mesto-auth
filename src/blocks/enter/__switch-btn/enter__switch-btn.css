@@ -1,0 +1,9 @@
+.enter__switch-btn {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.enter__switch-btn:hover {
+  opacity: 0.5;
+}

@@ -1,0 +1,6 @@
+.popup__container-fullscreen-photo {
+  position: relative;
+  display: block;
+  max-width: 75vw;
+  max-height: 75vh;
+}

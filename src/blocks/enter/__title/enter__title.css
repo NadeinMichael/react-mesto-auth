@@ -1,0 +1,14 @@
+.enter__title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+}
+
+@media all and (max-width: 320px) {
+  .enter__title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}

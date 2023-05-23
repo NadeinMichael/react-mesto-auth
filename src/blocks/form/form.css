@@ -1,0 +1,10 @@
+.form {
+  margin-top: 50px;
+  width: 100%;
+}
+
+@media all and (max-width: 320px) {
+  .form {
+    margin-top: 40px;
+  }
+}

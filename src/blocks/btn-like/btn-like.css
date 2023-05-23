@@ -1,0 +1,16 @@
+.btn-like {
+  background-image: url(../../images/btn-like.svg);
+  background-repeat: no-repeat;
+  background-size: 22px 19px;
+  width: 22px;
+  height: 19px;
+  background-color: inherit;
+  border: none;
+  margin-left: auto;
+  cursor: pointer;
+  transition: opacity .3s ease;
+}
+
+.btn-like:hover {
+  opacity: 0.5;
+}
