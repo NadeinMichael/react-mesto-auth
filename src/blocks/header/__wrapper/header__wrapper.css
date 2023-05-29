@@ -1,0 +1,10 @@
+.header__wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media all and (max-width: 920px) {
+  .header__wrapper {
+    margin: 0 27px;
+  }
+}

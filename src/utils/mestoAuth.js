@@ -35,6 +35,6 @@ export const checkJwt = (token) => {
       Authorization: `Bearer ${token}`,
     },
   }).then((res) =>
-    res.ok ? res.json : Promise.reject(`Ошибка: ${res.status}`)
+    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
   );
 };

@@ -7,7 +7,11 @@
 @import url('./blocks/page/page.css');
 /* Block Header */
 @import url('./blocks/header/header.css');
+@import url('./blocks/header/__wrapper/header__wrapper.css');
 @import url('./blocks/header/__logo/header__logo.css');
+@import url('./blocks/header/__navbar/header__navbar.css');
+@import url('./blocks/header/__link/header__link.css');
+@import url('./blocks/header/__user-info/header__user-info.css');
 /* Block Main */
 @import url('./blocks/main/main.css');
 /* Block Profile */
@@ -60,3 +64,9 @@
 @import url('./blocks/form/__submit/form__submit.css');
 @import url('./blocks/enter/__switch-text/enter__switch-text.css');
 @import url('./blocks/enter/__switch-btn/enter__switch-btn.css');
+/* Block tooltip */
+@import url('./blocks/tooltip/tooltip.css');
+@import url('./blocks/tooltip/__container/tooltip__container.css');
+@import url('./blocks/tooltip/__btn-close/tooltip__btn-close.css');
+@import url('./blocks/tooltip/__img/tooltip__img.css');
+@import url('./blocks/tooltip/__title/tooltip__title.css');

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-import Header from './Header';
+import errorLoginImg from '../images/error-login.svg';
+import successfulLoginImg from '../images/successful-login.svg';
+
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
@@ -14,9 +16,15 @@ import ConfirmPopup from './popups/ConfirmPopup';
 import Login from './enter/Login';
 import Register from './enter/Register';
 import ProtectedRoute from './ProtectedRoute';
+import * as mestoAuth from '../utils/mestoAuth.js';
+import InfoTooltip from './popups/InfoTooltip';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isValidLogin, setIsValidLogin] = useState(null);
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
+
+  const [loggedIn, setLoggedIn] = useState(null);
+  const [userData, setUserData] = useState('');
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -41,7 +49,8 @@ function App() {
     isAddPlacePopupOpen ||
     isEditAvatarPopupOpen ||
     selectedCard ||
-    isConfirmPopupOpen;
+    isConfirmPopupOpen ||
+    showInfoTooltip;
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -49,7 +58,62 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setSelectedCard(null);
     setIsConfirmPopupOpen(false);
+    setShowInfoTooltip(false);
   };
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogin = (password, email) => {
+    mestoAuth
+      .authorize(password, email)
+      .then((data) => {
+        localStorage.setItem('token', data.token);
+        setUserData(email);
+        setLoggedIn(true);
+        setIsValidLogin(true);
+        setShowInfoTooltip(true);
+        navigate('/');
+      })
+      .catch((error) => {
+        setIsValidLogin(false);
+        setShowInfoTooltip(true);
+        console.log(error);
+      });
+  };
+
+  const handleRegister = (password, email) => {
+    mestoAuth
+      .register(password, email)
+      .then(() => {
+        navigate('/login');
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const checkToken = () => {
+    const token = localStorage.getItem('token');
+    mestoAuth
+      .checkJwt(token)
+      .then((data) => {
+        if (data) {
+          setUserData(data.data.email);
+          setLoggedIn(true);
+          navigate(location.pathname);
+        } else {
+          setLoggedIn(false);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  function handleCloseTooltip() {
+    setShowInfoTooltip(false);
+  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -134,8 +198,26 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <div className="page">
-          <Header />
-
+          {showInfoTooltip ? (
+            isValidLogin ? (
+              <InfoTooltip
+                title="Вы успешно зарегистрировались!"
+                img={successfulLoginImg}
+                handleClose={handleCloseTooltip}
+                onClose={closeAllPopups}
+              />
+            ) : (
+              <InfoTooltip
+                title="Что-то пошло не так!
+Попробуйте ещё раз."
+                img={errorLoginImg}
+                handleClose={handleCloseTooltip}
+                onClose={closeAllPopups}
+              />
+            )
+          ) : (
+            ''
+          )}
           <Routes>
             <Route
               path="/"
@@ -143,6 +225,7 @@ function App() {
                 <ProtectedRoute
                   component={
                     <Main
+                      userData={userData}
                       cards={cards}
                       onEditAvatar={() => {
                         setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -171,42 +254,22 @@ function App() {
                 />
               }
             />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<h2>Not Found</h2>} />
-            {/* <Route
-              path="/"
+            <Route
+              path="/register"
+              element={<Register handleRegister={handleRegister} />}
+            />
+            <Route
+              path="/login"
               element={
-                !loggedIn ? (
-                  <Navigate to="/login" replace />
-                ) : (
-                  <Main
-                    cards={cards}
-                    onEditAvatar={() => {
-                      setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
-                    }}
-                    onEditProfile={() => {
-                      setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
-                    }}
-                    onAddPlace={() => {
-                      setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
-                    }}
-                    onConfirm={() => {
-                      setIsConfirmPopupOpen(!isConfirmPopupOpen);
-                    }}
-                    onCardClick={(link) => {
-                      setSelectedCard(link);
-                    }}
-                    onCardLike={(card) => {
-                      handleCardLike(card);
-                    }}
-                    setCardDelete={(id) => {
-                      setCurrentDeleteCard(id);
-                    }}
-                  />
-                )
+                <Login
+                  handleLogin={handleLogin}
+                  isValidLogin={isValidLogin}
+                  showInfoTooltip={showInfoTooltip}
+                  handleCloseTooltip={handleCloseTooltip}
+                />
               }
-            /> */}
+            />
+            <Route path="*" element={<h2>Not Found</h2>} />
           </Routes>
 
           <Footer />

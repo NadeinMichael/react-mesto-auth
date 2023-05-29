@@ -30,7 +30,12 @@ function Card({ card, onCardClick, onCardLike, setCardDelete, onConfirm }) {
           onClick={handleDeleteClick}
         />
       )}
-      <img className="gallery__img" src={card.link} onClick={handleCardClick} />
+      <img
+        className="gallery__img"
+        src={card.link}
+        onClick={handleCardClick}
+        alt={card.name}
+      />
       <div className="gallery__info">
         <h2 className="gallery__title">{card.name}</h2>
         <div className="gallery__like-wrapper">

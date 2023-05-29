@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import * as mestoAuth from '../../utils/mestoAuth.js';
+import Header from '../Header.js';
 
-const Register = () => {
-  const navigate = useNavigate();
+const Register = ({ handleRegister }) => {
   const [formValue, setFormValue] = useState({
     email: '',
     password: '',
@@ -19,18 +18,14 @@ const Register = () => {
   };
 
   const handleSubmit = (e) => {
-    const { email, password } = formValue;
+    const { password, email } = formValue;
     e.preventDefault();
-    mestoAuth
-      .register(password, email)
-      .then(() => {
-        navigate('/');
-      })
-      .catch((error) => console.log(error));
+    handleRegister(password, email);
   };
 
   return (
     <>
+      <Header />
       <div className="enter">
         <div className="enter__wrapper">
           <h2 className="enter__title">Регистрация</h2>
