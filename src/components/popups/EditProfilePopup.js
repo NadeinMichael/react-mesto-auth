@@ -1,14 +1,13 @@
-import PopupWithForm from './PopupWithForm';
-import { useState, useEffect, useContext } from 'react';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
+import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import PopupWithForm from './PopupWithForm';
+
+function EditProfilePopup({ isOpen, onUpdateUser }) {
   const currentUser = useContext(CurrentUserContext);
-  const [isLoading, setIsLoading] = useState(false);
 
   function onSubmit({ name, description }) {
-    setIsLoading(true);
     onUpdateUser({
       name,
       about: description,
@@ -28,7 +27,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   });
 
   useEffect(() => {
-    setIsLoading(false);
     reset({
       name: currentUser.name,
       description: currentUser.about,
@@ -40,10 +38,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       title="Редактировать профиль"
       name="edit-profile"
       isOpen={isOpen}
-      onClose={onClose}
       onSubmit={handleSubmit(onSubmit)}
       isValid={isValid}
-      isLoading={isLoading}
     >
       <input
         {...register('name', {

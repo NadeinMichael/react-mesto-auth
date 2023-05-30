@@ -27,7 +27,9 @@ const Enter = ({ title, buttonText, children }) => {
             placeholder="Password"
           />
           <span className="form__text-error"></span>
-          <button className="form__submit">{buttonText}</button>
+          <button className="form__submit" type="submit">
+            {buttonText}
+          </button>
         </form>
         {children}
       </div>

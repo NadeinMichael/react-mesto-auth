@@ -1,22 +1,14 @@
-import { useState } from 'react';
+import useControlInputs from '../../hooks/useControlInputs.js';
 import Header from '../Header.js';
 
 const Login = ({ handleLogin }) => {
-  const [formValue, setFormValue] = useState({
+  const { values, handleChange } = useControlInputs({
     email: '',
     password: '',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
-
   const handleSubmit = (e) => {
-    const { password, email } = formValue;
+    const { password, email } = values;
     e.preventDefault();
     handleLogin(password, email);
   };
@@ -34,6 +26,7 @@ const Login = ({ handleLogin }) => {
               type="email"
               placeholder="Email"
               onChange={handleChange}
+              value={values.email}
             />
             <span className="form__text-error"></span>
             <input
@@ -42,6 +35,7 @@ const Login = ({ handleLogin }) => {
               type="password"
               placeholder="Password"
               onChange={handleChange}
+              value={values.password}
             />
             <span className="form__text-error"></span>
             <button className="form__submit">Войти</button>

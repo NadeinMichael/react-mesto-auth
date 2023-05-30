@@ -1,10 +1,8 @@
 import PopupWithForm from './PopupWithForm';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
-  const [isLoading, setIsLoading] = useState(false);
-
+function AddPlacePopup({ isOpen, onAddPlace }) {
   const {
     register,
     formState: { errors, isValid },
@@ -13,8 +11,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   } = useForm({ mode: 'onChange' });
 
   function onSubmit({ name, link }) {
-    setIsLoading(true);
-
     onAddPlace({
       name,
       link,
@@ -22,8 +18,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
   }
 
   useEffect(() => {
-    setIsLoading(false);
-
     reset();
   }, [isOpen, reset]);
 
@@ -33,10 +27,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       name="add-place"
       buttonText="Создать"
       isOpen={isOpen}
-      onClose={onClose}
       onSubmit={handleSubmit(onSubmit)}
       isValid={isValid}
-      isLoading={isLoading}
     >
       <input
         {...register('name', {

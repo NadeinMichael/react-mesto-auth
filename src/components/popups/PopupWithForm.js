@@ -1,26 +1,29 @@
+import { useContext } from 'react';
+
+import AppContext from '../../contexts/AppContext';
+import usePopupClose from '../../hooks/usePopupClose';
+
 function PopupWithForm({
   title,
   name,
   buttonText,
   isOpen,
-  onClose,
   onSubmit,
   isValid,
-  isLoading,
   children,
 }) {
+  const { isLoading, closeAllPopups } = useContext(AppContext);
+  usePopupClose(isOpen, closeAllPopups);
+
   return (
-    <div className={`popup ${isOpen && 'popup_opened'}`} onClick={onClose}>
-      <div
-        className="popup__container popup__overlay"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className={`popup ${isOpen && 'popup_opened'}`}>
+      <div className="popup__container popup__overlay">
         <button
           className="popup__btn-close"
           type="button"
           aria-label="закрыть"
-          onClick={onClose}
-        ></button>
+          onClick={closeAllPopups}
+        />
         <h2 className="popup__title">{title}</h2>
         <form
           className="popup__form"

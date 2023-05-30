@@ -1,24 +1,16 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../Header.js';
+import useControlInputs from '../../hooks/useControlInputs.js';
 
 const Register = ({ handleRegister }) => {
-  const [formValue, setFormValue] = useState({
+  const { values, handleChange } = useControlInputs({
     email: '',
     password: '',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValue({
-      ...formValue,
-      [name]: value,
-    });
-  };
-
   const handleSubmit = (e) => {
-    const { password, email } = formValue;
+    const { password, email } = values;
     e.preventDefault();
     handleRegister(password, email);
   };
@@ -36,7 +28,7 @@ const Register = ({ handleRegister }) => {
               type="email"
               placeholder="Email"
               onChange={handleChange}
-              value={formValue.email}
+              value={values.email}
             />
             <span className="form__text-error"></span>
             <input
@@ -45,7 +37,7 @@ const Register = ({ handleRegister }) => {
               type="password"
               placeholder="Password"
               onChange={handleChange}
-              value={formValue.password}
+              value={values.password}
             />
             <span className="form__text-error"></span>
             <button className="form__submit">Зарегистрироваться</button>

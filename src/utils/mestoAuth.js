@@ -1,40 +1,41 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+import checkResponse from './checkResponse';
+
+export const baseUrl = 'https://auth.nomoreparties.co';
+
+async function request(endpoint, options) {
+  const res = await fetch(`${baseUrl}${endpoint}`, options);
+  return checkResponse(res);
+}
 
 export const register = (password, email) => {
-  return fetch(`${BASE_URL}/signup`, {
+  return request('/signup', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-  );
+  });
 };
 
 export const authorize = (password, email) => {
-  return fetch(`${BASE_URL}/signin`, {
+  return request('/signin', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-  );
+  });
 };
 
 export const checkJwt = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
+  return request('/users/me', {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-  );
+  });
 };
